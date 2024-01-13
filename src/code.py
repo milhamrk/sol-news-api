@@ -23,26 +23,24 @@ class CNN:
         """
         datas = get(url)
         soup = BeautifulSoup(datas.text, 'html.parser')
-        parent_tag = soup.find('div', class_="media_rows")
-        tag = parent_tag.find_all("article")
+        articles = soup.find_all('article', class_='flex-grow')
         data = []
 
-        for i in tag:
+        for article in articles:
             try:
-                title = i.find("h2", attrs={'class':'title'}).text.strip()
-                link = i.find('a')['href'].strip()
-                gambar = i.find('img')['src'].strip()
-                # tipe = i.find('span', attrs={'class':'kanal'}).text
-                # waktu = i.find('span', attrs={'class':'date'}).text
+                link_tag = article.find('a', href=True)
+                title = article.find('h2').text.strip()
+                link = link_tag['href'].strip()
+                image_tag = article.find('img')
+                image_src = image_tag['src'].strip() if image_tag else None
+
                 data.append({
                     "judul": title,
                     "link": link,
-                    "poster": gambar,
-                    # "tipe": tipe,
-                    # "waktu": waktu
+                    "poster": image_src,
                 })
-            except:
-                pass
+            except Exception as e:
+                print(f"Error processing article: {e}")
 
         return data
 
