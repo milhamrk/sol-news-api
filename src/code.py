@@ -1,7 +1,7 @@
 from bs4 import BeautifulSoup
 from requests import get
 
-base_url = 'https://www.cnnindonesia.com'
+base_url = 'https://www.cnnindonesia.com/search/?query=udara'
 
 class CNN:
     """
